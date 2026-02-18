@@ -11,7 +11,6 @@
             margin: 0;
             padding: 0;
             color: white;
-            /* Твой градиент: Циан/Бирюза -> Маджента/Фиолетовый */
             background: linear-gradient(180deg, #00BCD4 0%, #40E0D0 30%, #8B008B 80%, #9400D3 100%);
             min-height: 100vh;
             display: flex;
@@ -81,11 +80,6 @@
             opacity: 0.8;
             line-height: 1.4;
         }
-
-        /* Кнопка внизу */
-        .main-button {
-            display: none; /* Telegram сам покажет MainButton */
-        }
     </style>
 </head>
 <body>
@@ -97,40 +91,30 @@
         </div>
 
         <div class="card" onclick="sendData('consultation')">
-            <div class="card-title">
-                <span class="icon">⚖️</span> Консультация
-            </div>
-            <div class="card-desc">
-                Ответ на любой правовой вопрос со ссылками на законы РФ.
-            </div>
+            <div class="card-title"><span class="icon">⚖️</span> Консультация</div>
+            <div class="card-desc">Ответ на любой правовой вопрос со ссылками на законы РФ.</div>
         </div>
 
         <div class="card" onclick="sendData('check_doc')">
-            <div class="card-title">
-                <span class="icon">🔍</span> Проверка документа
-            </div>
-            <div class="card-desc">
-                Найдем "подводные камни" и опасные формулировки в договоре.
-            </div>
+            <div class="card-title"><span class="icon">🔍</span> Проверка документа</div>
+            <div class="card-desc">Найдем "подводные камни" и опасные формулировки.</div>
         </div>
 
         <div class="card" onclick="sendData('create_doc')">
-            <div class="card-title">
-                <span class="icon">📄</span> Составить договор
-            </div>
-            <div class="card-desc">
-                Генерация шаблонов или индивидуальных документов под ключ.
-            </div>
+            <div class="card-title"><span class="icon">📄</span> Составить договор</div>
+            <div class="card-desc">Генерация шаблонов или индивидуальных документов.</div>
         </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Раскрыть на весь экран
+        tg.expand();
 
         function sendData(action) {
-            // Отправляем данные обратно в бота
+            // Отправляем данные
             tg.sendData(JSON.stringify({action: action}));
+            // ПРИНУДИТЕЛЬНО ЗАКРЫВАЕМ ОКНО (важное исправление)
+            tg.close();
         }
     </script>
 </body>
