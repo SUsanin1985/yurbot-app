@@ -80,26 +80,27 @@
 
         .tpl-btn:active { background: rgba(255, 255, 255, 0.2); }
 
+        /* Поля ввода в анкете */
+        .form-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 12px; margin-bottom: 5px; opacity: 0.8; padding-left: 5px; }
+        input, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
         /* Поле для ИИ генерации */
         .custom-gen {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 15px;
             border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
-            padding: 10px;
-            font-family: inherit;
-            font-size: 13px;
-            resize: none;
-            box-sizing: border-box;
-            margin-bottom: 10px;
         }
 
         .gen-btn {
@@ -137,12 +138,12 @@
             <p>Выберите услугу для начала работы</p>
         </div>
 
-        <div class="card" onclick="sendSimpleData('consultation')">
+        <div class="card" onclick="sendSimpleAction('consultation')">
             <div class="card-title"><span class="icon">⚖️</span> Консультация</div>
             <div class="card-desc">Ответ на любой правовой вопрос со ссылками на законы РФ.</div>
         </div>
 
-        <div class="card" onclick="sendSimpleData('check_doc')">
+        <div class="card" onclick="sendSimpleAction('check_doc')">
             <div class="card-title"><span class="icon">🔍</span> Проверка документа</div>
             <div class="card-desc">Найдем "подводные камни" и опасные формулировки.</div>
         </div>
@@ -162,16 +163,16 @@
         </div>
 
         <div class="templates-grid">
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_car')">🚗 ДКП Авто</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_rent')">🏠 Аренда жилья</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_work')">💼 Трудовой</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_service')">🛠 Оказание услуг</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_power')">📜 Доверенность</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_claim')">✉️ Претензия</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_suit')">🏛 Иск в суд</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_receipt')">📝 Расписка</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_loan')">💰 Займ</div>
-            <div class="tpl-btn" onclick="sendSimpleData('create_doc_gift')">🎁 Дарение</div>
+            <div class="tpl-btn" onclick="openForm('car', '🚗 ДКП Авто')">🚗 ДКП Авто</div>
+            <div class="tpl-btn" onclick="openForm('rent', '🏠 Аренда жилья')">🏠 Аренда жилья</div>
+            <div class="tpl-btn" onclick="openForm('work', '💼 Трудовой')">💼 Трудовой</div>
+            <div class="tpl-btn" onclick="openForm('service', '🛠 Услуги')">🛠 Услуги</div>
+            <div class="tpl-btn" onclick="openForm('power', '📜 Доверенность')">📜 Доверенность</div>
+            <div class="tpl-btn" onclick="openForm('claim', '✉️ Претензия')">✉️ Претензия</div>
+            <div class="tpl-btn" onclick="openForm('suit', '🏛 Иск в суд')">🏛 Иск в суд</div>
+            <div class="tpl-btn" onclick="openForm('receipt', '📝 Расписка')">📝 Расписка</div>
+            <div class="tpl-btn" onclick="openForm('loan', '💰 Займ')">💰 Займ</div>
+            <div class="tpl-btn" onclick="openForm('gift', '🎁 Дарение')">🎁 Дарение</div>
         </div>
 
         <div class="custom-gen">
@@ -181,22 +182,106 @@
         </div>
     </div>
 
+    <div id="form-screen" class="container hidden">
+        <button class="back-btn" onclick="openDocMenu()">← К выбору шаблона</button>
+        <div class="header">
+            <h1 id="form-title">Анкета</h1>
+            <p>Заполните данные для документа</p>
+        </div>
+
+        <div id="dynamic-fields">
+            </div>
+
+        <button class="gen-btn" style="margin-top: 10px;" onclick="submitForm()">Сформировать и отправить</button>
+    </div>
+
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
+        let currentDocType = '';
+
+        // Конфигурация полей для каждого договора
+        const fieldsConfig = {
+            'car': [
+                {id: 'car_make_model', label: 'Марка и модель авто', type: 'text'},
+                {id: 'car_vin', label: 'VIN-номер', type: 'text'},
+                {id: 'price', label: 'Стоимость (цифрами)', type: 'number'}
+            ],
+            'rent': [
+                {id: 'property_address', label: 'Адрес жилого помещения', type: 'text'},
+                {id: 'rent_price', label: 'Ежемесячная плата', type: 'number'},
+                {id: 'deposit_price', label: 'Сумма залога', type: 'number'}
+            ],
+            'loan': [
+                {id: 'loan_amount', label: 'Сумма займа', type: 'number'},
+                {id: 'interest_rate', label: 'Процентная ставка (%)', type: 'number'},
+                {id: 'return_date', label: 'Дата возврата', type: 'text'}
+            ],
+            'service': [
+                {id: 'service_description', label: 'Описание услуг', type: 'textarea'},
+                {id: 'price', label: 'Общая стоимость', type: 'number'}
+            ]
+            // Остальные добавятся автоматически как "Базовая анкета"
+        };
+
         function openDocMenu() {
-            document.getElementById('main-screen').classList.add('hidden');
+            hideAll();
             document.getElementById('doc-screen').classList.remove('hidden');
         }
 
         function openMainMenu() {
-            document.getElementById('doc-screen').classList.add('hidden');
+            hideAll();
             document.getElementById('main-screen').classList.remove('hidden');
         }
 
-        function sendSimpleData(action) {
+        function openForm(type, title) {
+            currentDocType = type;
+            document.getElementById('form-title').innerText = title;
+            const container = document.getElementById('dynamic-fields');
+            container.innerHTML = '';
+
+            const fields = fieldsConfig[type] || [
+                {id: 'fio', label: 'Ваше ФИО полностью', type: 'text'},
+                {id: 'details', label: 'Дополнительные детали', type: 'textarea'}
+            ];
+
+            fields.forEach(field => {
+                const div = document.createElement('div');
+                div.className = 'form-group';
+                const input = field.type === 'textarea' 
+                    ? `<textarea id="${field.id}" rows="3"></textarea>` 
+                    : `<input type="${field.type}" id="${field.id}">`;
+                div.innerHTML = `<label>${field.label}</label>${input}`;
+                container.appendChild(div);
+            });
+
+            hideAll();
+            document.getElementById('form-screen').classList.remove('hidden');
+        }
+
+        function hideAll() {
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('doc-screen').classList.add('hidden');
+            document.getElementById('form-screen').classList.add('hidden');
+        }
+
+        function sendSimpleAction(action) {
             tg.sendData(JSON.stringify({action: action}));
+            tg.close();
+        }
+
+        function submitForm() {
+            const data = { 
+                action: 'create_doc_' + currentDocType,
+                fields: {} 
+            };
+            const inputs = document.querySelectorAll('#dynamic-fields input, #dynamic-fields textarea');
+            inputs.forEach(input => {
+                data.fields[input.id] = input.value;
+            });
+
+            tg.sendData(JSON.stringify(data));
             tg.close();
         }
 
