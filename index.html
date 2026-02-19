@@ -215,87 +215,409 @@
         let currentDocType = '';
         let currentDocTitle = '';
 
-        // ПОЛНАЯ КОНФИГУРАЦИЯ ПОЛЕЙ ДЛЯ ВСЕХ 10 ШАБЛОНОВ
+        // ПОЛНАЯ КОНФИГУРАЦИЯ ПОЛЕЙ ДЛЯ ВСЕХ 10 ШАБЛОНОВ (БЕЗ СОКРАЩЕНИЙ)
         const fieldsConfig = {
             'car': [
-                {type: 'header', label: 'Данные сделки'},
+                {type: 'header', label: 'Общие данные'},
                 {id: 'city', label: 'Город подписания', type: 'text'},
-                {id: 'price', label: 'Стоимость авто (цифрами)', type: 'number'},
-                {type: 'header', label: 'Продавец'},
-                {id: 'seller_fio', label: 'ФИО Продавца полностью', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Данные Продавца'},
+                {id: 'seller_fio', label: 'ФИО Продавца (полностью)', type: 'text'},
+                {id: 'seller_birth', label: 'Дата рождения', type: 'text'},
                 {id: 'seller_p_series', label: 'Серия паспорта', type: 'number'},
                 {id: 'seller_p_num', label: 'Номер паспорта', type: 'number'},
-                {type: 'header', label: 'Покупатель'},
-                {id: 'buyer_fio', label: 'ФИО Покупателя полностью', type: 'text'},
+                {id: 'seller_p_issued', label: 'Кем выдан паспорт', type: 'text'},
+                {id: 'seller_p_date', label: 'Дата выдачи паспорта', type: 'date'},
+                {id: 'seller_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'seller_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Данные Покупателя'},
+                {id: 'buyer_fio', label: 'ФИО Покупателя (полностью)', type: 'text'},
+                {id: 'buyer_birth', label: 'Дата рождения', type: 'text'},
                 {id: 'buyer_p_series', label: 'Серия паспорта', type: 'number'},
                 {id: 'buyer_p_num', label: 'Номер паспорта', type: 'number'},
-                {type: 'header', label: 'Автомобиль'},
+                {id: 'buyer_p_issued', label: 'Кем выдан паспорт', type: 'text'},
+                {id: 'buyer_p_date', label: 'Дата выдачи паспорта', type: 'date'},
+                {id: 'buyer_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'buyer_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Данные Автомобиля'},
                 {id: 'car_make_model', label: 'Марка и модель авто', type: 'text'},
-                {id: 'car_vin', label: 'VIN-номер', type: 'text'},
                 {id: 'car_year', label: 'Год выпуска', type: 'number'},
+                {id: 'car_vin', label: 'VIN-номер', type: 'text'},
+                {id: 'car_plate', label: 'Государственный номер', type: 'text'},
+                {id: 'car_engine', label: 'Номер двигателя', type: 'text'},
+                {id: 'car_body', label: 'Номер кузова', type: 'text'},
+                {id: 'car_chassis', label: 'Номер шасси (если нет, пишите "Отсутствует")', type: 'text'},
+                {id: 'car_color', label: 'Цвет кузова', type: 'text'},
+
+                {type: 'header', label: 'Документы и сделка'},
                 {id: 'pts_series', label: 'Серия ПТС', type: 'text'},
-                {id: 'pts_num', label: 'Номер ПТС', type: 'text'}
+                {id: 'pts_num', label: 'Номер ПТС', type: 'text'},
+                {id: 'pts_date', label: 'Дата выдачи ПТС', type: 'date'},
+                {id: 'pts_issued_by', label: 'Кем выдан ПТС', type: 'text'},
+                {id: 'sts_series', label: 'Серия СТС', type: 'text'},
+                {id: 'sts_num', label: 'Номер СТС', type: 'text'},
+                {id: 'keys_count', label: 'Количество комплектов ключей', type: 'number'},
+                {id: 'price', label: 'Стоимость автомобиля (цифрами)', type: 'number'}
             ],
+            
             'rent': [
-                {id: 'city', label: 'Город', type: 'text'},
-                {id: 'landlord_fio', label: 'ФИО Арендодателя полностью', type: 'text'},
-                {id: 'tenant_fio', label: 'ФИО Арендатора полностью', type: 'text'},
-                {id: 'property_address', label: 'Адрес квартиры', type: 'text'},
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Арендодатель (Хозяин)'},
+                {id: 'landlord_fio', label: 'ФИО Арендодателя', type: 'text'},
+                {id: 'landlord_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'landlord_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'landlord_p_issued', label: 'Кем выдан паспорт', type: 'text'},
+                {id: 'landlord_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'landlord_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Арендатор (Жилец)'},
+                {id: 'tenant_fio', label: 'ФИО Арендатора', type: 'text'},
+                {id: 'tenant_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'tenant_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'tenant_p_issued', label: 'Кем выдан паспорт', type: 'text'},
+                {id: 'tenant_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'tenant_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Квартира и условия'},
+                {id: 'property_address', label: 'Точный адрес квартиры', type: 'text'},
+                {id: 'property_cad_num', label: 'Кадастровый номер', type: 'text'},
+                {id: 'property_area', label: 'Площадь квартиры (кв.м)', type: 'number'},
+                {id: 'ownership_doc', label: 'Документ на собственность (напр. Выписка ЕГРН)', type: 'text'},
+                {id: 'residents_fio', label: 'Кто будет проживать (ФИО всех жильцов)', type: 'textarea'},
+                {id: 'keys_count', label: 'Количество ключей', type: 'number'},
+                {id: 'start_date', label: 'Дата заезда', type: 'date'},
+                {id: 'end_date', label: 'Дата окончания договора', type: 'date'},
+                {id: 'notice_days', label: 'За сколько дней предупреждать о выезде', type: 'number'},
+
+                {type: 'header', label: 'Оплата'},
                 {id: 'rent_price', label: 'Арендная плата в месяц (цифрами)', type: 'number'},
-                {id: 'deposit_price', label: 'Сумма залога (цифрами)', type: 'number'}
+                {id: 'payment_day', label: 'До какого числа платить каждый месяц', type: 'number'},
+                {id: 'utility_bills', label: 'Какие ЖКУ оплачивает жилец (напр. свет, вода, интернет)', type: 'text'},
+                {id: 'deposit_price', label: 'Сумма залога', type: 'number'}
             ],
-            'work': [
-                {id: 'city', label: 'Город', type: 'text'},
-                {id: 'employer_name', label: 'Название компании (Работодатель)', type: 'text'},
-                {id: 'employee_fio', label: 'ФИО Работника полностью', type: 'text'},
-                {id: 'position', label: 'Должность', type: 'text'},
-                {id: 'salary_amount', label: 'Оклад в месяц (рублей)', type: 'number'}
+
+            'commercial': [
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Арендодатель'},
+                {id: 'landlord_name', label: 'Наименование (ООО/ИП/ФИО)', type: 'text'},
+                {id: 'landlord_rep', label: 'В лице кого (ФИО подписанта)', type: 'text'},
+                {id: 'landlord_base', label: 'Действует на основании (Устав/Доверенность)', type: 'text'},
+                {id: 'landlord_inn', label: 'ИНН', type: 'text'},
+                {id: 'landlord_ogrn', label: 'ОГРН/ОГРНИП', type: 'text'},
+                {id: 'landlord_address', label: 'Юридический адрес', type: 'text'},
+                {id: 'landlord_bank', label: 'Банк', type: 'text'},
+                {id: 'landlord_account', label: 'Расчетный счет', type: 'text'},
+                {id: 'landlord_bik', label: 'БИК', type: 'text'},
+                {id: 'landlord_corr', label: 'Корр. счет', type: 'text'},
+
+                {type: 'header', label: 'Арендатор'},
+                {id: 'tenant_name', label: 'Наименование (ООО/ИП/ФИО)', type: 'text'},
+                {id: 'tenant_rep', label: 'В лице кого (ФИО подписанта)', type: 'text'},
+                {id: 'tenant_base', label: 'Действует на основании', type: 'text'},
+                {id: 'tenant_inn', label: 'ИНН', type: 'text'},
+                {id: 'tenant_ogrn', label: 'ОГРН/ОГРНИП', type: 'text'},
+                {id: 'tenant_address', label: 'Юридический адрес', type: 'text'},
+                {id: 'tenant_bank', label: 'Банк', type: 'text'},
+                {id: 'tenant_account', label: 'Расчетный счет', type: 'text'},
+                {id: 'tenant_bik', label: 'БИК', type: 'text'},
+                {id: 'tenant_corr', label: 'Корр. счет', type: 'text'},
+
+                {type: 'header', label: 'Помещение и условия'},
+                {id: 'address', label: 'Адрес помещения', type: 'text'},
+                {id: 'premises_area', label: 'Площадь (кв.м)', type: 'number'},
+                {id: 'floor', label: 'Этаж', type: 'text'},
+                {id: 'cad_num', label: 'Кадастровый номер', type: 'text'},
+                {id: 'purpose', label: 'Цель использования (напр. офис, склад)', type: 'text'},
+                {id: 'start_date', label: 'Дата начала аренды', type: 'date'},
+                {id: 'end_date', label: 'Дата окончания аренды', type: 'date'},
+                {id: 'handover_days', label: 'Дней на передачу по акту', type: 'number'},
+                {id: 'notice_days', label: 'За сколько дней предупреждать о расторжении', type: 'number'},
+                
+                {type: 'header', label: 'Оплата'},
+                {id: 'rent_price', label: 'Арендная плата в месяц (цифрами)', type: 'number'},
+                {id: 'nds_status', label: 'НДС (включен / не облагается)', type: 'text'},
+                {id: 'payment_day', label: 'До какого числа платить', type: 'number'},
+                {id: 'penalty_rate', label: 'Пени за просрочку (% в день)', type: 'text'}
             ],
+
             'service': [
-                {id: 'city', label: 'Город', type: 'text'},
-                {id: 'customer_name', label: 'Заказчик (ФИО или Название компании)', type: 'text'},
-                {id: 'contractor_name', label: 'Исполнитель (ФИО или Название компании)', type: 'text'},
-                {id: 'service_description', label: 'Краткое описание оказываемых услуг', type: 'textarea'},
-                {id: 'price', label: 'Стоимость услуг', type: 'number'}
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Заказчик'},
+                {id: 'customer_name', label: 'Наименование (ООО/ИП/ФИО)', type: 'text'},
+                {id: 'customer_rep', label: 'В лице кого (ФИО)', type: 'text'},
+                {id: 'customer_base', label: 'Действует на основании', type: 'text'},
+                {id: 'customer_inn', label: 'ИНН', type: 'text'},
+                {id: 'customer_address', label: 'Адрес/Регистрация', type: 'text'},
+                {id: 'customer_p_series', label: 'Серия паспорта (если физлицо, иначе прочерк)', type: 'text'},
+                {id: 'customer_p_num', label: 'Номер паспорта', type: 'text'},
+                {id: 'customer_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'customer_bank', label: 'Банк', type: 'text'},
+                {id: 'customer_account', label: 'Расчетный счет', type: 'text'},
+                {id: 'customer_bik', label: 'БИК', type: 'text'},
+
+                {type: 'header', label: 'Исполнитель'},
+                {id: 'contractor_name', label: 'Наименование (ООО/ИП/ФИО)', type: 'text'},
+                {id: 'contractor_rep', label: 'В лице кого (ФИО)', type: 'text'},
+                {id: 'contractor_base', label: 'Действует на основании', type: 'text'},
+                {id: 'contractor_inn', label: 'ИНН', type: 'text'},
+                {id: 'contractor_address', label: 'Адрес/Регистрация', type: 'text'},
+                {id: 'contractor_p_series', label: 'Серия паспорта (если физлицо, иначе прочерк)', type: 'text'},
+                {id: 'contractor_p_num', label: 'Номер паспорта', type: 'text'},
+                {id: 'contractor_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'contractor_bank', label: 'Банк', type: 'text'},
+                {id: 'contractor_account', label: 'Расчетный счет', type: 'text'},
+                {id: 'contractor_bik', label: 'БИК', type: 'text'},
+
+                {type: 'header', label: 'Условия услуг'},
+                {id: 'service_description', label: 'Подробное описание услуг', type: 'textarea'},
+                {id: 'service_location', label: 'Место оказания услуг (или онлайн)', type: 'text'},
+                {id: 'start_date', label: 'Дата начала', type: 'date'},
+                {id: 'end_date', label: 'Дата окончания', type: 'date'},
+                {id: 'defect_fix_days', label: 'Дней на устранение недостатков', type: 'number'},
+                {id: 'acceptance_days', label: 'Дней на подписание акта приемки', type: 'number'},
+                {id: 'notice_days', label: 'Дней на уведомление о расторжении', type: 'number'},
+                {id: 'penalty_rate', label: 'Пени за просрочку (% в день)', type: 'text'},
+
+                {type: 'header', label: 'Оплата'},
+                {id: 'price', label: 'Общая стоимость услуг (цифрами)', type: 'number'},
+                {id: 'payment_terms', label: 'Порядок оплаты (напр. 100% предоплата)', type: 'text'}
             ],
+
+            'work': [
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Работодатель'},
+                {id: 'employer_name', label: 'Название компании', type: 'text'},
+                {id: 'employer_rep', label: 'В лице (ФИО руководителя)', type: 'text'},
+                {id: 'employer_base', label: 'Действует на основании', type: 'text'},
+                {id: 'employer_inn', label: 'ИНН', type: 'text'},
+                {id: 'employer_kpp', label: 'КПП', type: 'text'},
+                {id: 'employer_address', label: 'Юридический адрес', type: 'text'},
+
+                {type: 'header', label: 'Работник'},
+                {id: 'employee_fio', label: 'ФИО Работника (полностью)', type: 'text'},
+                {id: 'employee_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'employee_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'employee_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'employee_p_date', label: 'Дата выдачи', type: 'date'},
+                {id: 'employee_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'employee_address', label: 'Адрес регистрации', type: 'text'},
+                {id: 'employee_inn', label: 'ИНН', type: 'text'},
+                {id: 'employee_snils', label: 'СНИЛС', type: 'text'},
+                {id: 'employee_bank', label: 'Банк для ЗП', type: 'text'},
+                {id: 'employee_account', label: 'Счет для ЗП', type: 'text'},
+                {id: 'employee_bik', label: 'БИК банка', type: 'text'},
+
+                {type: 'header', label: 'Условия работы'},
+                {id: 'position', label: 'Должность', type: 'text'},
+                {id: 'workplace_address', label: 'Фактическое место работы (адрес)', type: 'text'},
+                {id: 'job_type', label: 'Тип работы (основная / по совместительству)', type: 'text'},
+                {id: 'start_date', label: 'Дата выхода на работу', type: 'date'},
+                {id: 'probation_months', label: 'Испытательный срок (мес)', type: 'number'},
+                {id: 'work_schedule', label: 'График (напр. 5/2 с 09:00 до 18:00)', type: 'text'},
+                {id: 'break_time', label: 'Перерыв (напр. 1 час)', type: 'text'},
+
+                {type: 'header', label: 'Зарплата'},
+                {id: 'salary_amount', label: 'Оклад в месяц (рублей)', type: 'number'},
+                {id: 'advance_date', label: 'Дата выплаты аванса (число)', type: 'number'},
+                {id: 'salary_date', label: 'Дата выплаты остатка (число)', type: 'number'}
+            ],
+
             'power': [
+                {type: 'header', label: 'Общие данные'},
                 {id: 'city', label: 'Город выдачи', type: 'text'},
-                {id: 'principal_fio', label: 'Кто доверяет (ФИО полностью)', type: 'text'},
-                {id: 'rep_fio', label: 'Кому доверяют (ФИО полностью)', type: 'text'},
-                {id: 'expiration_date', label: 'Срок действия (например: 31.12.2026)', type: 'text'}
+                {id: 'issue_date', label: 'Дата совершения доверенности', type: 'date'},
+                
+                {type: 'header', label: 'Представляемый (Кто доверяет)'},
+                {id: 'principal_fio', label: 'ФИО полностью', type: 'text'},
+                {id: 'principal_birth', label: 'Дата рождения', type: 'date'},
+                {id: 'principal_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'principal_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'principal_p_issued', label: 'Кем выдан паспорт', type: 'text'},
+                {id: 'principal_p_date', label: 'Дата выдачи паспорта', type: 'date'},
+                {id: 'principal_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'principal_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Представитель (Кому доверяют)'},
+                {id: 'rep_fio', label: 'ФИО полностью', type: 'text'},
+                {id: 'rep_birth', label: 'Дата рождения', type: 'date'},
+                {id: 'rep_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'rep_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'rep_p_issued', label: 'Кем выдан паспорт', type: 'text'},
+                {id: 'rep_p_date', label: 'Дата выдачи паспорта', type: 'date'},
+                {id: 'rep_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'rep_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Полномочия'},
+                {id: 'delegation_status', label: 'Право передоверия (напр. без права передоверия)', type: 'text'},
+                {id: 'expiration_date', label: 'Срок действия доверенности (до какого числа)', type: 'date'}
             ],
+
             'claim': [
+                {type: 'header', label: 'Реквизиты'},
                 {id: 'receiver_name', label: 'Кому (ФИО или Название должника)', type: 'text'},
+                {id: 'receiver_inn', label: 'ИНН должника', type: 'text'},
+                {id: 'receiver_address', label: 'Адрес должника', type: 'text'},
+                
                 {id: 'sender_name', label: 'От кого (Ваше ФИО или Название)', type: 'text'},
+                {id: 'sender_inn', label: 'Ваш ИНН', type: 'text'},
+                {id: 'sender_address', label: 'Ваш адрес', type: 'text'},
+                {id: 'sender_phone', label: 'Ваш телефон', type: 'text'},
+                {id: 'sender_email', label: 'Ваш E-mail', type: 'text'},
+
+                {type: 'header', label: 'Суть претензии'},
+                {id: 'current_date', label: 'Дата составления претензии', type: 'date'},
+                {id: 'contract_date', label: 'Дата заключения нарушенного договора', type: 'date'},
                 {id: 'contract_num', label: 'Номер нарушенного договора', type: 'text'},
-                {id: 'debt_sum', label: 'Сумма основного долга (рублей)', type: 'number'}
+                {id: 'breach_description', label: 'В чем суть нарушения (напр. не оплатили товар)', type: 'textarea'},
+                {id: 'penalty_clause', label: 'Пункт договора о неустойке (напр. 5.1)', type: 'text'},
+                
+                {type: 'header', label: 'Требования'},
+                {id: 'debt_sum', label: 'Сумма основного долга (руб.)', type: 'number'},
+                {id: 'penalty_sum', label: 'Сумма неустойки/пени (руб.)', type: 'number'},
+                {id: 'total_sum', label: 'Общая сумма требований (долг + пени)', type: 'number'},
+                {id: 'deadline_date', label: 'Срок оплаты (до какого числа)', type: 'date'}
             ],
+
             'suit': [
-                {id: 'court_name', label: 'Название суда (например: Мировой суд участка №5)', type: 'text'},
-                {id: 'plaintiff_name', label: 'Истец (Ваше ФИО или Название)', type: 'text'},
-                {id: 'defendant_name', label: 'Ответчик (ФИО или Название должника)', type: 'text'},
-                {id: 'claim_sum', label: 'Цена иска (Общая сумма, рублей)', type: 'number'},
-                {id: 'duty_sum', label: 'Сумма уплаченной госпошлины (рублей)', type: 'number'}
+                {type: 'header', label: 'Суд и стороны'},
+                {id: 'court_name', label: 'Название суда (напр. Арбитражный суд г. Москвы)', type: 'text'},
+                {id: 'court_address', label: 'Адрес суда', type: 'text'},
+                
+                {id: 'plaintiff_name', label: 'Истец (Ваше ФИО/Название)', type: 'text'},
+                {id: 'plaintiff_inn', label: 'Ваш ИНН', type: 'text'},
+                {id: 'plaintiff_address', label: 'Ваш адрес', type: 'text'},
+                {id: 'plaintiff_phone', label: 'Ваш телефон', type: 'text'},
+                {id: 'plaintiff_email', label: 'Ваш E-mail', type: 'text'},
+
+                {id: 'defendant_name', label: 'Ответчик (ФИО/Название должника)', type: 'text'},
+                {id: 'defendant_ident', label: 'Идентификатор ответчика (ИНН, СНИЛС или паспорт)', type: 'text'},
+                {id: 'defendant_address', label: 'Адрес ответчика', type: 'text'},
+                {id: 'defendant_phone', label: 'Телефон ответчика', type: 'text'},
+
+                {type: 'header', label: 'Иск'},
+                {id: 'current_date', label: 'Дата подачи иска', type: 'date'},
+                {id: 'claim_sum', label: 'Цена иска (Общая сумма, руб.)', type: 'number'},
+                {id: 'duty_sum', label: 'Размер уплаченной госпошлины (руб.)', type: 'number'},
+                
+                {type: 'header', label: 'Суть спора'},
+                {id: 'contract_date', label: 'Дата заключения договора', type: 'date'},
+                {id: 'contract_num', label: 'Номер договора', type: 'text'},
+                {id: 'contract_subject', label: 'Предмет договора (напр. поставка товара)', type: 'text'},
+                {id: 'breach_description', label: 'Как нарушили договор', type: 'textarea'},
+                {id: 'penalty_clause', label: 'Пункт договора о неустойке', type: 'text'},
+                {id: 'debt_sum', label: 'Сумма долга', type: 'number'},
+                {id: 'penalty_sum', label: 'Сумма неустойки', type: 'number'},
+                {id: 'claim_date', label: 'Дата направления досудебной претензии', type: 'date'}
             ],
+
             'receipt': [
-                {id: 'city', label: 'Город', type: 'text'},
-                {id: 'receiver_fio', label: 'ФИО кто получил деньги', type: 'text'},
-                {id: 'payer_fio', label: 'ФИО кто передал деньги', type: 'text'},
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Кто получил деньги'},
+                {id: 'receiver_fio', label: 'ФИО полностью', type: 'text'},
+                {id: 'receiver_birth', label: 'Дата рождения', type: 'date'},
+                {id: 'receiver_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'receiver_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'receiver_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'receiver_p_date', label: 'Дата выдачи', type: 'date'},
+                {id: 'receiver_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'receiver_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Кто передал деньги'},
+                {id: 'payer_fio', label: 'ФИО полностью', type: 'text'},
+                {id: 'payer_birth', label: 'Дата рождения', type: 'date'},
+                {id: 'payer_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'payer_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'payer_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'payer_p_date', label: 'Дата выдачи', type: 'date'},
+                {id: 'payer_p_code', label: 'Код подразделения', type: 'text'},
+                {id: 'payer_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Деньги'},
                 {id: 'amount', label: 'Сумма (цифрами)', type: 'number'},
-                {id: 'reason', label: 'Основание (например: за автомобиль, возврат долга)', type: 'text'}
+                {id: 'reason', label: 'Основание передачи (например: возврат долга по расписке, за авто)', type: 'text'}
             ],
+
             'loan': [
-                {id: 'city', label: 'Город', type: 'text'},
-                {id: 'lender_name', label: 'Заимодавец (кто дает деньги)', type: 'text'},
-                {id: 'borrower_name', label: 'Заемщик (кто берет деньги)', type: 'text'},
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Заимодавец (Дает деньги)'},
+                {id: 'lender_name', label: 'Наименование (ООО/ИП/ФИО)', type: 'text'},
+                {id: 'lender_rep', label: 'В лице кого (ФИО, если юрлицо)', type: 'text'},
+                {id: 'lender_base', label: 'Действует на основании', type: 'text'},
+                {id: 'lender_inn', label: 'ИНН', type: 'text'},
+                {id: 'lender_ogrn', label: 'ОГРН (для юрлиц)', type: 'text'},
+                {id: 'lender_p_series', label: 'Серия паспорта (для физлиц)', type: 'text'},
+                {id: 'lender_p_num', label: 'Номер паспорта', type: 'text'},
+                {id: 'lender_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'lender_address', label: 'Адрес/Регистрация', type: 'text'},
+                {id: 'lender_bank', label: 'Банк', type: 'text'},
+                {id: 'lender_account', label: 'Расчетный счет', type: 'text'},
+                {id: 'lender_bik', label: 'БИК', type: 'text'},
+
+                {type: 'header', label: 'Заемщик (Берет деньги)'},
+                {id: 'borrower_name', label: 'Наименование (ООО/ИП/ФИО)', type: 'text'},
+                {id: 'borrower_rep', label: 'В лице кого (ФИО, если юрлицо)', type: 'text'},
+                {id: 'borrower_base', label: 'Действует на основании', type: 'text'},
+                {id: 'borrower_inn', label: 'ИНН', type: 'text'},
+                {id: 'borrower_ogrn', label: 'ОГРН (для юрлиц)', type: 'text'},
+                {id: 'borrower_p_series', label: 'Серия паспорта (для физлиц)', type: 'text'},
+                {id: 'borrower_p_num', label: 'Номер паспорта', type: 'text'},
+                {id: 'borrower_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'borrower_address', label: 'Адрес/Регистрация', type: 'text'},
+                {id: 'borrower_bank', label: 'Банк', type: 'text'},
+                {id: 'borrower_account', label: 'Расчетный счет', type: 'text'},
+                {id: 'borrower_bik', label: 'БИК', type: 'text'},
+
+                {type: 'header', label: 'Условия займа'},
                 {id: 'loan_amount', label: 'Сумма займа', type: 'number'},
-                {id: 'interest_rate', label: 'Процентная ставка (впишите 0 если без %)', type: 'number'}
+                {id: 'transfer_method', label: 'Способ передачи (наличными / безналичным переводом)', type: 'text'},
+                {id: 'return_date', label: 'Дата возврата', type: 'date'},
+                {id: 'interest_rate', label: 'Процентная ставка (впишите 0 если без %)', type: 'number'},
+                {id: 'penalty_rate', label: 'Пени за просрочку (% в день)', type: 'text'}
             ],
+            
             'gift': [
-                {id: 'city', label: 'Город', type: 'text'},
+                {type: 'header', label: 'Общие данные'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'date', label: 'Дата подписания', type: 'date'},
+                
+                {type: 'header', label: 'Даритель'},
                 {id: 'donor_name', label: 'ФИО Дарителя', type: 'text'},
+                {id: 'donor_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'donor_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'donor_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'donor_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Одаряемый'},
                 {id: 'donee_name', label: 'ФИО Одаряемого', type: 'text'},
-                {id: 'gift_description', label: 'Что дарят (например: ноутбук Apple MacBook Air)', type: 'text'}
+                {id: 'donee_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'donee_p_num', label: 'Номер паспорта', type: 'number'},
+                {id: 'donee_p_issued', label: 'Кем выдан', type: 'text'},
+                {id: 'donee_address', label: 'Адрес регистрации', type: 'text'},
+
+                {type: 'header', label: 'Подарок'},
+                {id: 'gift_description', label: 'Что дарят (подробное описание)', type: 'textarea'},
+                {id: 'gift_value', label: 'Оценочная стоимость (руб.)', type: 'number'}
             ]
         };
 
@@ -409,3 +731,4 @@
     </script>
 </body>
 </html>
+
