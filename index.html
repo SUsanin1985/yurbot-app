@@ -94,6 +94,12 @@
             font-size: 14px;
             box-sizing: border-box;
         }
+        
+        /* Заголовки секций в анкете */
+        .section-title { 
+            font-size: 15px; font-weight: bold; margin: 20px 0 10px; 
+            border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px;
+        }
 
         /* Поле для ИИ генерации */
         .custom-gen {
@@ -103,28 +109,25 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
+        /* Кнопки */
         .gen-btn {
-            width: 100%;
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
+            width: 100%; background: #fff; color: #000; border: none; padding: 12px;
+            border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;
+        }
+        
+        /* Новые кнопки для экрана выбора формата */
+        .btn-primary { 
+            width: 100%; background: #fff; color: #6A0DAD; border: none; padding: 14px; 
+            border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; margin-bottom: 10px; 
+        }
+        .btn-secondary { 
+            width: 100%; background: transparent; color: #fff; border: 1px solid #fff; 
+            padding: 14px; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; 
         }
 
         .back-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 15px;
-            opacity: 0.8;
+            background: none; border: none; color: white; font-size: 14px; display: flex;
+            align-items: center; cursor: pointer; margin-bottom: 15px; opacity: 0.8; padding: 0;
         }
 
         .hidden { display: none; }
@@ -163,16 +166,16 @@
         </div>
 
         <div class="templates-grid">
-            <div class="tpl-btn" onclick="openForm('car', '🚗 ДКП Авто')">🚗 ДКП Авто</div>
-            <div class="tpl-btn" onclick="openForm('rent', '🏠 Аренда жилья')">🏠 Аренда жилья</div>
-            <div class="tpl-btn" onclick="openForm('work', '💼 Трудовой')">💼 Трудовой</div>
-            <div class="tpl-btn" onclick="openForm('service', '🛠 Услуги')">🛠 Услуги</div>
-            <div class="tpl-btn" onclick="openForm('power', '📜 Доверенность')">📜 Доверенность</div>
-            <div class="tpl-btn" onclick="openForm('claim', '✉️ Претензия')">✉️ Претензия</div>
-            <div class="tpl-btn" onclick="openForm('suit', '🏛 Иск в суд')">🏛 Иск в суд</div>
-            <div class="tpl-btn" onclick="openForm('receipt', '📝 Расписка')">📝 Расписка</div>
-            <div class="tpl-btn" onclick="openForm('loan', '💰 Займ')">💰 Займ</div>
-            <div class="tpl-btn" onclick="openForm('gift', '🎁 Дарение')">🎁 Дарение</div>
+            <div class="tpl-btn" onclick="openFormatChoice('car', '🚗 ДКП Авто')">🚗 ДКП Авто</div>
+            <div class="tpl-btn" onclick="openFormatChoice('rent', '🏠 Аренда жилья')">🏠 Аренда жилья</div>
+            <div class="tpl-btn" onclick="openFormatChoice('work', '💼 Трудовой')">💼 Трудовой</div>
+            <div class="tpl-btn" onclick="openFormatChoice('service', '🛠 Услуги')">🛠 Услуги</div>
+            <div class="tpl-btn" onclick="openFormatChoice('power', '📜 Доверенность')">📜 Доверенность</div>
+            <div class="tpl-btn" onclick="openFormatChoice('claim', '✉️ Претензия')">✉️ Претензия</div>
+            <div class="tpl-btn" onclick="openFormatChoice('suit', '🏛 Иск в суд')">🏛 Иск в суд</div>
+            <div class="tpl-btn" onclick="openFormatChoice('receipt', '📝 Расписка')">📝 Расписка</div>
+            <div class="tpl-btn" onclick="openFormatChoice('loan', '💰 Займ')">💰 Займ</div>
+            <div class="tpl-btn" onclick="openFormatChoice('gift', '🎁 Дарение')">🎁 Дарение</div>
         </div>
 
         <div class="custom-gen">
@@ -182,8 +185,18 @@
         </div>
     </div>
 
+    <div id="format-screen" class="container hidden">
+        <button class="back-btn" onclick="openDocMenu()">← К списку документов</button>
+        <div class="header">
+            <h1 id="format-title">Название</h1>
+            <p>Как вы хотите его получить?</p>
+        </div>
+        <button class="btn-primary" onclick="startForm()">📝 Заполнить онлайн (Готовый файл)</button>
+        <button class="btn-secondary" onclick="downloadBlank()">📄 Скачать пустой бланк (Для ручки)</button>
+    </div>
+
     <div id="form-screen" class="container hidden">
-        <button class="back-btn" onclick="openDocMenu()">← К выбору шаблона</button>
+        <button class="back-btn" onclick="goBackToFormat()">← Назад</button>
         <div class="header">
             <h1 id="form-title">Анкета</h1>
             <p>Заполните данные для документа</p>
@@ -192,7 +205,7 @@
         <div id="dynamic-fields">
             </div>
 
-        <button class="gen-btn" style="margin-top: 10px;" onclick="submitForm()">Сформировать и отправить</button>
+        <button class="gen-btn" style="margin-top: 15px;" onclick="submitForm()">Сформировать и отправить</button>
     </div>
 
     <script>
@@ -200,30 +213,99 @@
         tg.expand();
 
         let currentDocType = '';
+        let currentDocTitle = '';
 
-        // Конфигурация полей для каждого договора
+        // ПОЛНАЯ КОНФИГУРАЦИЯ ПОЛЕЙ ДЛЯ ВСЕХ 10 ШАБЛОНОВ
         const fieldsConfig = {
             'car': [
+                {type: 'header', label: 'Данные сделки'},
+                {id: 'city', label: 'Город подписания', type: 'text'},
+                {id: 'price', label: 'Стоимость авто (цифрами)', type: 'number'},
+                {type: 'header', label: 'Продавец'},
+                {id: 'seller_fio', label: 'ФИО Продавца полностью', type: 'text'},
+                {id: 'seller_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'seller_p_num', label: 'Номер паспорта', type: 'number'},
+                {type: 'header', label: 'Покупатель'},
+                {id: 'buyer_fio', label: 'ФИО Покупателя полностью', type: 'text'},
+                {id: 'buyer_p_series', label: 'Серия паспорта', type: 'number'},
+                {id: 'buyer_p_num', label: 'Номер паспорта', type: 'number'},
+                {type: 'header', label: 'Автомобиль'},
                 {id: 'car_make_model', label: 'Марка и модель авто', type: 'text'},
                 {id: 'car_vin', label: 'VIN-номер', type: 'text'},
-                {id: 'price', label: 'Стоимость (цифрами)', type: 'number'}
+                {id: 'car_year', label: 'Год выпуска', type: 'number'},
+                {id: 'pts_series', label: 'Серия ПТС', type: 'text'},
+                {id: 'pts_num', label: 'Номер ПТС', type: 'text'}
             ],
             'rent': [
-                {id: 'property_address', label: 'Адрес жилого помещения', type: 'text'},
-                {id: 'rent_price', label: 'Ежемесячная плата', type: 'number'},
-                {id: 'deposit_price', label: 'Сумма залога', type: 'number'}
+                {id: 'city', label: 'Город', type: 'text'},
+                {id: 'landlord_fio', label: 'ФИО Арендодателя полностью', type: 'text'},
+                {id: 'tenant_fio', label: 'ФИО Арендатора полностью', type: 'text'},
+                {id: 'property_address', label: 'Адрес квартиры', type: 'text'},
+                {id: 'rent_price', label: 'Арендная плата в месяц (цифрами)', type: 'number'},
+                {id: 'deposit_price', label: 'Сумма залога (цифрами)', type: 'number'}
             ],
-            'loan': [
-                {id: 'loan_amount', label: 'Сумма займа', type: 'number'},
-                {id: 'interest_rate', label: 'Процентная ставка (%)', type: 'number'},
-                {id: 'return_date', label: 'Дата возврата', type: 'text'}
+            'work': [
+                {id: 'city', label: 'Город', type: 'text'},
+                {id: 'employer_name', label: 'Название компании (Работодатель)', type: 'text'},
+                {id: 'employee_fio', label: 'ФИО Работника полностью', type: 'text'},
+                {id: 'position', label: 'Должность', type: 'text'},
+                {id: 'salary_amount', label: 'Оклад в месяц (рублей)', type: 'number'}
             ],
             'service': [
-                {id: 'service_description', label: 'Описание услуг', type: 'textarea'},
-                {id: 'price', label: 'Общая стоимость', type: 'number'}
+                {id: 'city', label: 'Город', type: 'text'},
+                {id: 'customer_name', label: 'Заказчик (ФИО или Название компании)', type: 'text'},
+                {id: 'contractor_name', label: 'Исполнитель (ФИО или Название компании)', type: 'text'},
+                {id: 'service_description', label: 'Краткое описание оказываемых услуг', type: 'textarea'},
+                {id: 'price', label: 'Стоимость услуг', type: 'number'}
+            ],
+            'power': [
+                {id: 'city', label: 'Город выдачи', type: 'text'},
+                {id: 'principal_fio', label: 'Кто доверяет (ФИО полностью)', type: 'text'},
+                {id: 'rep_fio', label: 'Кому доверяют (ФИО полностью)', type: 'text'},
+                {id: 'expiration_date', label: 'Срок действия (например: 31.12.2026)', type: 'text'}
+            ],
+            'claim': [
+                {id: 'receiver_name', label: 'Кому (ФИО или Название должника)', type: 'text'},
+                {id: 'sender_name', label: 'От кого (Ваше ФИО или Название)', type: 'text'},
+                {id: 'contract_num', label: 'Номер нарушенного договора', type: 'text'},
+                {id: 'debt_sum', label: 'Сумма основного долга (рублей)', type: 'number'}
+            ],
+            'suit': [
+                {id: 'court_name', label: 'Название суда (например: Мировой суд участка №5)', type: 'text'},
+                {id: 'plaintiff_name', label: 'Истец (Ваше ФИО или Название)', type: 'text'},
+                {id: 'defendant_name', label: 'Ответчик (ФИО или Название должника)', type: 'text'},
+                {id: 'claim_sum', label: 'Цена иска (Общая сумма, рублей)', type: 'number'},
+                {id: 'duty_sum', label: 'Сумма уплаченной госпошлины (рублей)', type: 'number'}
+            ],
+            'receipt': [
+                {id: 'city', label: 'Город', type: 'text'},
+                {id: 'receiver_fio', label: 'ФИО кто получил деньги', type: 'text'},
+                {id: 'payer_fio', label: 'ФИО кто передал деньги', type: 'text'},
+                {id: 'amount', label: 'Сумма (цифрами)', type: 'number'},
+                {id: 'reason', label: 'Основание (например: за автомобиль, возврат долга)', type: 'text'}
+            ],
+            'loan': [
+                {id: 'city', label: 'Город', type: 'text'},
+                {id: 'lender_name', label: 'Заимодавец (кто дает деньги)', type: 'text'},
+                {id: 'borrower_name', label: 'Заемщик (кто берет деньги)', type: 'text'},
+                {id: 'loan_amount', label: 'Сумма займа', type: 'number'},
+                {id: 'interest_rate', label: 'Процентная ставка (впишите 0 если без %)', type: 'number'}
+            ],
+            'gift': [
+                {id: 'city', label: 'Город', type: 'text'},
+                {id: 'donor_name', label: 'ФИО Дарителя', type: 'text'},
+                {id: 'donee_name', label: 'ФИО Одаряемого', type: 'text'},
+                {id: 'gift_description', label: 'Что дарят (например: ноутбук Apple MacBook Air)', type: 'text'}
             ]
-            // Остальные добавятся автоматически как "Базовая анкета"
         };
+
+        // Функции навигации
+        function hideAll() {
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('doc-screen').classList.add('hidden');
+            document.getElementById('format-screen').classList.add('hidden');
+            document.getElementById('form-screen').classList.add('hidden');
+        }
 
         function openDocMenu() {
             hideAll();
@@ -235,45 +317,65 @@
             document.getElementById('main-screen').classList.remove('hidden');
         }
 
-        function openForm(type, title) {
-            currentDocType = type;
-            document.getElementById('form-title').innerText = title;
-            const container = document.getElementById('dynamic-fields');
-            container.innerHTML = '';
+        function goBackToFormat() {
+            hideAll();
+            document.getElementById('format-screen').classList.remove('hidden');
+        }
 
-            const fields = fieldsConfig[type] || [
+        // Вызов промежуточного экрана
+        function openFormatChoice(type, title) {
+            currentDocType = type;
+            currentDocTitle = title;
+            document.getElementById('format-title').innerText = title;
+            hideAll();
+            document.getElementById('format-screen').classList.remove('hidden');
+        }
+
+        // Действие: скачать пустой бланк
+        function downloadBlank() {
+            // Бот получит команду формата "download_blank_car"
+            tg.sendData(JSON.stringify({ action: 'download_blank_' + currentDocType }));
+            tg.close();
+        }
+
+        // Действие: заполнить форму
+        function startForm() {
+            document.getElementById('form-title').innerText = currentDocTitle;
+            const container = document.getElementById('dynamic-fields');
+            container.innerHTML = ''; // Очищаем старые поля
+
+            const fields = fieldsConfig[currentDocType] || [
                 {id: 'fio', label: 'Ваше ФИО полностью', type: 'text'},
                 {id: 'details', label: 'Дополнительные детали', type: 'textarea'}
             ];
 
             fields.forEach(field => {
-                const div = document.createElement('div');
-                div.className = 'form-group';
-                const input = field.type === 'textarea' 
-                    ? `<textarea id="${field.id}" rows="3"></textarea>` 
-                    : `<input type="${field.type}" id="${field.id}">`;
-                div.innerHTML = `<label>${field.label}</label>${input}`;
-                container.appendChild(div);
+                if(field.type === 'header') {
+                    // Генерируем разделитель
+                    const h = document.createElement('div');
+                    h.className = 'section-title';
+                    h.innerText = field.label;
+                    container.appendChild(h);
+                } else {
+                    // Генерируем поле ввода
+                    const div = document.createElement('div');
+                    div.className = 'form-group';
+                    const input = field.type === 'textarea' 
+                        ? `<textarea id="${field.id}" rows="3"></textarea>` 
+                        : `<input type="${field.type}" id="${field.id}">`;
+                    div.innerHTML = `<label>${field.label}</label>${input}`;
+                    container.appendChild(div);
+                }
             });
 
             hideAll();
             document.getElementById('form-screen').classList.remove('hidden');
         }
 
-        function hideAll() {
-            document.getElementById('main-screen').classList.add('hidden');
-            document.getElementById('doc-screen').classList.add('hidden');
-            document.getElementById('form-screen').classList.add('hidden');
-        }
-
-        function sendSimpleAction(action) {
-            tg.sendData(JSON.stringify({action: action}));
-            tg.close();
-        }
-
+        // Отправка данных боту
         function submitForm() {
             const data = { 
-                action: 'create_doc_' + currentDocType,
+                action: 'fill_doc_' + currentDocType,
                 fields: {} 
             };
             const inputs = document.querySelectorAll('#dynamic-fields input, #dynamic-fields textarea');
@@ -285,6 +387,13 @@
             tg.close();
         }
 
+        // Простые команды (Консультация, Проверка)
+        function sendSimpleAction(action) {
+            tg.sendData(JSON.stringify({action: action}));
+            tg.close();
+        }
+
+        // ИИ генерация
         function sendCustomDoc() {
             const text = document.getElementById('custom-text').value;
             if (!text.trim()) {
