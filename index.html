@@ -11,8 +11,8 @@
             margin: 0;
             padding: 0;
             color: white;
-            /* Твоя фирменная палитра: Циан -> Бирюза -> Маджента -> Пурпур */
-            background: linear-gradient(180deg, #00FBFF 0%, #40E0D0 30%, #FF00FF 80%, #6A0DAD 100%);
+            /* Строгий юридический дизайн: Темно-синий/графитовый градиент */
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -94,6 +94,9 @@
             font-size: 14px;
             box-sizing: border-box;
         }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
         
         /* Заголовки секций в анкете */
         .section-title { 
@@ -117,7 +120,7 @@
         
         /* Новые кнопки для экрана выбора формата */
         .btn-primary { 
-            width: 100%; background: #fff; color: #6A0DAD; border: none; padding: 14px; 
+            width: 100%; background: #fff; color: #0f2027; border: none; padding: 14px; 
             border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; margin-bottom: 10px; 
         }
         .btn-secondary { 
@@ -153,7 +156,7 @@
 
         <div class="card" onclick="openDocMenu()">
             <div class="card-title"><span class="icon">📄</span> Составить договор</div>
-            <div class="card-desc">10 типовых шаблонов или умная генерация через ИИ.</div>
+            <div class="card-desc">11 типовых шаблонов или умная генерация через ИИ.</div>
         </div>
     </div>
 
@@ -168,6 +171,7 @@
         <div class="templates-grid">
             <div class="tpl-btn" onclick="openFormatChoice('car', '🚗 ДКП Авто')">🚗 ДКП Авто</div>
             <div class="tpl-btn" onclick="openFormatChoice('rent', '🏠 Аренда жилья')">🏠 Аренда жилья</div>
+            <div class="tpl-btn" onclick="openFormatChoice('commercial', '🏢 Коммерция')">🏢 Коммерция</div>
             <div class="tpl-btn" onclick="openFormatChoice('work', '💼 Трудовой')">💼 Трудовой</div>
             <div class="tpl-btn" onclick="openFormatChoice('service', '🛠 Услуги')">🛠 Услуги</div>
             <div class="tpl-btn" onclick="openFormatChoice('power', '📜 Доверенность')">📜 Доверенность</div>
@@ -179,7 +183,7 @@
         </div>
 
         <div class="custom-gen">
-            <div style="font-weight: bold; font-size: 14px; margin-bottom: 8px;">Индивидуальный проект</div>
+            <div style="font-weight: bold; font-size: 14px; margin-bottom: 8px; color: #81d4fa;">Индивидуальный проект</div>
             <textarea id="custom-text" rows="3" placeholder="Опишите, какой документ вам нужен и какие условия включить..."></textarea>
             <button class="gen-btn" onclick="sendCustomDoc()">Сгенерировать ИИ</button>
         </div>
@@ -731,4 +735,3 @@
     </script>
 </body>
 </html>
-
